@@ -1,27 +1,29 @@
 import { getAllTasks } from "../api/tasks.api";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import TaskCard from "./TaskCard";
 
 export default function TasksList() {
   
   const [ tasks, setTasks ] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function loadTasks() {
       const res = await getAllTasks();
+      console.log(res)
       setTasks(res.data)
     }
     loadTasks();
   }, []);
 
   return (
-  <div>
+  <div className="grid grid-cols-3 gap-3">
       {
-        tasks.map(task => {
-          <div key={task.id}>
-            <h1>{task.title}</h1>
-            <p>{task.description}</p>
-          </div>
-        })
+        tasks.map(task => (
+          <TaskCard key={task.id} task={task} />
+        ))
       }
   </div>
   );
